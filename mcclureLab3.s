@@ -18,6 +18,8 @@
 .global main 
 .text
 
+main: 
+
 @ This label is for setting the register equal to the max amount of coffee allowed
 @**********
 waterLoad:
@@ -165,24 +167,28 @@ exit:
 	mov r7, #0x01 @ Set r7 equal to 0x01
 	svc 0 @ Call svc 0 to exit the program
 
-@ This label is for the secret code to display the water level and the amount of cups used
+@ This subroutine is for the secret code to display the water level and the amount of cups used
 @**********
 secretCode:
 @**********
-
-    ldr r0, waterLevel @ Load the waterLevel prompt into r0
-    ldr r1, r4 @ Load the value of r4 into r1
+    push {lr} @ Push the link register to the stack 
+    ldr r0, =waterLevel @ Load the waterLevel prompt into r0
+    mov r1, r4 @ Load the value of r4 into r1
     bl printf @ Call printf to print the prompt
 
-    ldr r0, smallCups @ Load the smallCups prompt into r0
-    ldr r1, r7 @ Load the value of r7 into r1
+    ldr r0, =smallCups @ Load the smallCups prompt into r0
+    mov r1, r7 @ Load the value of r7 into r1
     bl printf @ Call printf to print the prompt
 
-    ldr r0, mediumCups @ Load the mediumCups prompt into r0
-    ldr r1, r8 @ Load the value of r8 into r1
+    ldr r0, =mediumCups @ Load the mediumCups prompt into r0
+    mov r1, r8 @ Load the value of r8 into r1
     bl printf @ Call printf to print the prompt
 
-    mov pc, lr @ Exit the subroutine 
+    ldr r0, =largeCups @ Load the largeCups prompt into r0
+    mov r1, r9 @ Load the value of r9 into r1
+    bl printf @ Call printf to print the prompt
+
+    pop {pc} @ Exit the subroutine 
 
 .data 
 
